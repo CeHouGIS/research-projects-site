@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ce Hou 的城市视觉表征与野火建筑损毁研究项目。">
+  <meta name="theme-color" content="#f5f7f4">
+  <title>Ce Hou | Research Projects</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17241f;
+      --muted: #58675f;
+      --line: #d8dfda;
+      --paper: #f5f7f4;
+      --surface: #fff;
+      --green: #27624d;
+      --green-dark: #173d31;
+      --coral: #b64f3c;
+      --gold: #92702c;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a:hover { color: var(--green); }
+    button { font: inherit; }
+    .shell { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar {
+      min-height: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+    .identity { font-size: 14px; font-weight: 700; text-decoration: none; }
+    .identity span { color: var(--muted); font-weight: 500; margin-left: 8px; }
+    .top-links { display: flex; gap: 24px; color: var(--muted); font-size: 13px; }
+    .top-links a { text-decoration: none; }
+    .intro { padding: 54px 0 36px; }
+    .eyebrow, .section-kicker, .project-number {
+      margin: 0;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+    h1 { margin: 9px 0 10px; font-size: 38px; line-height: 1.12; font-weight: 680; }
+    .intro-copy { max-width: 720px; margin: 0; color: var(--muted); font-size: 16px; }
+    .stats {
+      display: flex;
+      gap: 34px;
+      flex-wrap: wrap;
+      padding: 22px 0 0;
+    }
+    .stat { min-width: 116px; border-left: 2px solid var(--line); padding-left: 11px; }
+    .stat strong { display: block; font-size: 20px; line-height: 1.1; font-weight: 650; }
+    .stat span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin: 6px 0 18px;
+    }
+    .section-title { margin: 0; font-size: 21px; font-weight: 650; }
+    .filters {
+      display: inline-flex;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .filters button {
+      min-height: 34px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .filters button[aria-pressed="true"] { background: var(--green-dark); color: white; }
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .project-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .project-card[hidden] { display: none; }
+    .card-body { padding: 20px 21px 18px; }
+    .card-heading { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
+    .project-number { color: var(--muted); }
+    h3 { margin: 4px 0 0; font-size: 21px; line-height: 1.25; font-weight: 650; }
+    .status { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; white-space: nowrap; }
+    .status::before { content: ""; width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: var(--gold); }
+    .status.complete::before { background: var(--green); }
+    .status.active::before { background: var(--coral); }
+    .description { margin: 14px 0 0; color: var(--muted); font-size: 13px; }
+    .detail-list { display: grid; gap: 8px; margin: 15px 0 0; padding: 0; list-style: none; }
+    .detail-list li { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 9px; font-size: 12px; }
+    .detail-list strong { color: var(--ink); font-weight: 650; }
+    .detail-list span { color: var(--muted); }
+    .card-footer { display: flex; flex-wrap: wrap; gap: 15px; padding-top: 15px; margin-top: 16px; border-top: 1px solid #e9edea; font-size: 12px; }
+    .card-footer a { color: var(--green); font-weight: 650; }
+    .visual { margin: 0; border-bottom: 1px solid var(--line); background: #e8eeea; }
+    .visual img { display: block; width: 100%; height: 182px; object-fit: cover; }
+    .visual figcaption { padding: 7px 12px; color: var(--muted); font-size: 10px; }
+    .wide { grid-column: 1 / -1; }
+    .wide .card-body { padding: 22px 24px; }
+    .wide .detail-list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+    .note {
+      margin: 16px 0 0;
+      padding: 12px 14px;
+      border-left: 3px solid var(--coral);
+      background: #fbf4f1;
+      color: #6b514a;
+      font-size: 12px;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 32px;
+      padding: 18px 0 28px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+    }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 32px, 620px); }
+      .topbar { min-height: 58px; }
+      .top-links { gap: 14px; font-size: 12px; }
+      .intro { padding: 38px 0 28px; }
+      h1 { max-width: 520px; font-size: 32px; }
+      .intro-copy { font-size: 14px; }
+      .stats { gap: 18px; }
+      .stat { min-width: 95px; }
+      .control-row { align-items: flex-start; flex-direction: column; }
+      .project-grid { grid-template-columns: 1fr; }
+      .wide { grid-column: auto; }
+      .wide .detail-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 420px) {
+      .shell { width: calc(100% - 24px); }
+      .top-links { gap: 10px; }
+      .identity span { display: none; }
+      h1 { font-size: 28px; }
+      .filters { width: 100%; }
+      .filters button { flex: 1; padding: 0 6px; }
+      .card-body, .wide .card-body { padding: 17px 15px; }
+      .card-heading { gap: 8px; }
+      h3 { font-size: 19px; }
+      .detail-list li { grid-template-columns: 64px minmax(0, 1fr); }
+      .visual img { height: 155px; }
+      .footer { flex-direction: column; gap: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell topbar">
+    <a class="identity" href="#top">Ce Hou <span>Research</span></a>
+    <nav class="top-links" aria-label="主导航">
+      <a href="#urban">城市视觉</a>
+      <a href="#wildfire">野火研究</a>
+      <a href="https://github.com/CeHouGIS">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="top" class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Research portfolio / 2026</p>
+      <h1 id="page-title">Ce Hou</h1>
+      <p class="intro-copy">城市视觉表征与野火建筑损毁信息基础设施。研究从可解释视觉原语与城市差异，延伸到跨火灾模型评估和可追溯的地理数据系统。</p>
+      <div class="stats" aria-label="项目概况">
+        <div class="stat"><strong>05</strong><span>研究项目</span></div>
+        <div class="stat"><strong>02</strong><span>研究主线</span></div>
+        <div class="stat"><strong>30+</strong><span>城市视觉样本城市</span></div>
+        <div class="stat"><strong>27</strong><span>建筑损毁研究火灾</span></div>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <div class="control-row">
+        <div>
+          <p class="section-kicker">Project index</p>
+          <h2 id="projects-title" class="section-title">研究项目</h2>
+        </div>
+        <div class="filters" role="group" aria-label="按研究方向筛选项目">
+          <button type="button" data-filter="all" aria-pressed="true">全部 5</button>
+          <button type="button" data-filter="urban" aria-pressed="false">城市视觉 2</button>
+          <button type="button" data-filter="fire" aria-pressed="false">野火研究 3</button>
+        </div>
+      </div>
+
+      <div class="project-grid">
+        <article id="urban" class="project-card" data-domain="urban">
+          <div class="card-body">
+            <div class="card-heading">
+              <div><p class="project-number">01 / Urban representation</p><h3>Urban Visual Gene</h3></div>
+              <span class="status active">组合探索</span>
+            </div>
+            <p class="description">将城市景观视作可分析、可重组的高维视觉表征，探索不同视觉成分如何共同构成局部景观。</p>
+            <ul class="detail-list">
+              <li><strong>已有工作</strong><span>多尺度 DINOv3 codebook 与 SAE 特征关系分析。</span></li>
+              <li><strong>进展</strong><span>局部组合、关系原型和多尺度原型实验已开展。</span></li>
+              <li><strong>下一步</strong><span>验证视觉基因的语义稳定性，并实现加减特征后的可控生成闭环。</span></li>
+            </ul>
+            <div class="card-footer">
+              <a href="https://github.com/CeHouGIS/urban-visual-gene">Urban Visual Gene 仓库</a>
+              <a href="https://github.com/CeHouGIS/urban-visual-transfer">层级表征代码（私有）</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card" data-domain="urban">
+          <figure class="visual">
+            <img src="https://raw.githubusercontent.com/CeHouGIS/urban-visual-gene/main/archive/non_batchtopk/dashboard/multi_area/assets/M01_four_view_original.webp" alt="四方向街景全景样例，用于城市视觉原语分析" loading="lazy">
+            <figcaption>四方向街景样例 · Urban Visual Gene public repository</figcaption>
+          </figure>
+          <div class="card-body">
+            <div class="card-heading">
+              <div><p class="project-number">02 / Sparse visual dictionary</p><h3>Urban Visual Primitives</h3></div>
+              <span class="status complete">主实验完成</span>
+            </div>
+            <p class="description">使用稀疏自编码器从城市街景中识别基本语义模式，比较不同城市的视觉组成与空间分布。</p>
+            <ul class="detail-list">
+              <li><strong>方法</strong><span>DINOv3 ViT-L/16 patch 表征 + BatchTopK SAE（W=4096，K=32）。</span></li>
+              <li><strong>进展</strong><span>30 城市主实验与逐维 VLM 候选标注完成；全球城市基线和消融分析已有结果。</span></li>
+              <li><strong>待验证</strong><span>独立语义核查、原语稳定性和跨城市 feature 对齐。</span></li>
+            </ul>
+            <div class="card-footer">
+              <a href="https://github.com/CeHouGIS/urban-visual-gene">代码与实验记录</a>
+              <a href="https://cehougis.github.io/urban-visual-gene/elements/#local-results">在线组合结果</a>
+            </div>
+          </div>
+        </article>
+
+        <article id="wildfire" class="project-card" data-domain="fire">
+          <div class="card-body">
+            <div class="card-heading">
+              <div><p class="project-number">03 / Data observation</p><h3>Fire Description</h3></div>
+              <span class="status active">论文修订</span>
+            </div>
+            <p class="description">评估火灾边界、建筑 footprint 与人类损毁观测能否在空间和事件上可靠连接，识别野火损毁数据基础中的观测缺口。</p>
+            <ul class="detail-list">
+              <li><strong>研究范围</strong><span>美国 2002–2025 年野火相关观测，分析多源数据匹配与不确定性。</span></li>
+              <li><strong>进展</strong><span>论文结构与主要结果已形成；2026-10-03 评论导出中 39/42 个审稿线程仍开放。</span></li>
+              <li><strong>重点修改</strong><span>整合流程、数据源优先级、可复现细节和图表仍需完善。</span></li>
+            </ul>
+            <div class="card-footer"><a href="https://github.com/CeHouGIS/Fire-Description">论文仓库（私有）</a></div>
+          </div>
+        </article>
+
+        <article class="project-card" data-domain="fire">
+          <figure class="visual">
+            <img src="https://raw.githubusercontent.com/CeHouGIS/urban-visual-gene/main/experiments/vitl30_panorama_w4096_k32/results/figures/Fig_ViTL30_Training_Loss.png" alt="Urban Visual Primitives 主实验训练损失曲线" loading="lazy">
+            <figcaption>Urban Visual Primitives 主实验训练曲线 · public experiment result</figcaption>
+          </figure>
+          <div class="card-body">
+            <div class="card-heading">
+              <div><p class="project-number">04 / Cross-fire model evaluation</p><h3>Fire Foundation Model</h3></div>
+              <span class="status active">结果待对齐</span>
+            </div>
+            <p class="description">评估地学基础模型和多光谱适配方法能否从 PlanetScope 灾前/灾后影像中识别建筑损毁，并迁移到未见火灾。</p>
+            <ul class="detail-list">
+              <li><strong>数据</strong><span>27 场野火、163,312 对建筑 patch；设置 Fire-level LOO 跨火灾测试。</span></li>
+              <li><strong>方法</strong><span>MultibandLoRA、Center-Aware Attention，并与 dNBR 物理基线比较。</span></li>
+              <li><strong>结果</strong><span>已有多个基准；论文摘要、正文与实验 README 的分数和波段设置仍需统一。</span></li>
+            </ul>
+            <div class="card-footer">
+              <a href="https://github.com/CeHouGIS/fire-damage-map">数据和实验（私有）</a>
+              <a href="https://github.com/CeHouGIS/FireDamageFM">论文稿件（私有）</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card wide" data-domain="fire">
+          <div class="card-body">
+            <div class="card-heading">
+              <div><p class="project-number">05 / Continuous geospatial infrastructure</p><h3>Fire Database / GeoLakebase</h3></div>
+              <span class="status active">持续建设</span>
+            </div>
+            <p class="description">把火灾边界、建筑物、卫星影像、现场损毁标签和模型预测组织成可版本化、可追溯的数据库与分析系统，并研究受约束的 LLM agent 如何监督异步数据流程。</p>
+            <ul class="detail-list">
+              <li><strong>数据系统</strong><span>DuckDB spatial、FastAPI、MapLibre 网页、统一损毁 ontology 和模型 provenance。</span></li>
+              <li><strong>论文</strong><span>WildfireDB 稿件提出 agent 负责有边界的流程监督，由确定性程序执行数据处理与写入。</span></li>
+              <li><strong>进展</strong><span>数据库、API、网页和仿真评估已形成；数据任务仍在更新，live LLM 评估尚未完成。</span></li>
+              <li><strong>最新动态</strong><span>公开网页部署仓库最近更新于 2026-11-01。</span></li>
+            </ul>
+            <div class="card-footer">
+              <a href="https://github.com/CeHouGIS/GeoLakebase">GeoLakebase 源码（私有）</a>
+              <a href="https://github.com/CeHouGIS/WildfireDB">WildfireDB 论文（私有）</a>
+              <a href="https://cehougis.github.io/wildfiredb-web/">数据库地图</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>项目状态依据 GitHub 仓库和稿件整理，最后核对：2026-11-03。</span>
+      <span><a href="https://github.com/CeHouGIS/research-projects-summary">项目汇总仓库</a></span>
+    </footer>
+  </main>
+  <script>
+    const filterButtons = [...document.querySelectorAll("[data-filter]")];
+    const projectCards = [...document.querySelectorAll(".project-card")];
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selected = button.dataset.filter;
+        filterButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        projectCards.forEach((card) => {
+          card.hidden = selected !== "all" && card.dataset.domain !== selected;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
