@@ -105,6 +105,8 @@
     .card-heading { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
     .project-number { color: var(--muted); }
     h3 { margin: 4px 0 0; font-size: 21px; line-height: 1.25; font-weight: 650; }
+    .card-heading h3 a { color: inherit; text-decoration: none; }
+    .card-heading h3 a:hover { color: var(--green); text-decoration: underline; }
     .status { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; white-space: nowrap; }
     .status::before { content: ""; width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: var(--gold); }
     .status.complete::before { background: var(--green); }
@@ -210,7 +212,7 @@
         <article id="urban" class="project-card" data-domain="urban">
           <div class="card-body">
             <div class="card-heading">
-              <div><p class="project-number">01 / Urban representation</p><h3>Urban Visual Gene</h3></div>
+              <div><p class="project-number">01 / Urban representation</p><h3><a href="urban-visual-gene.html">Urban Visual Gene</a></h3></div>
               <span class="status active">组合探索</span>
             </div>
             <p class="description">将城市景观视作可分析、可重组的高维视觉表征，探索不同视觉成分如何共同构成局部景观。</p>
@@ -234,7 +236,7 @@
           </figure>
           <div class="card-body">
             <div class="card-heading">
-              <div><p class="project-number">02 / Sparse visual dictionary</p><h3>Urban Visual Primitives</h3></div>
+              <div><p class="project-number">02 / Sparse visual dictionary</p><h3><a href="urban-visual-primitives.html">Urban Visual Primitives</a></h3></div>
               <span class="status complete">主实验完成</span>
             </div>
             <p class="description">使用稀疏自编码器从城市街景中识别基本语义模式，比较不同城市的视觉组成与空间分布。</p>
@@ -254,7 +256,7 @@
         <article id="wildfire" class="project-card" data-domain="fire">
           <div class="card-body">
             <div class="card-heading">
-              <div><p class="project-number">03 / Data observation</p><h3>Fire Description</h3></div>
+              <div><p class="project-number">03 / Data observation</p><h3><a href="fire-description.html">Fire Description</a></h3></div>
               <span class="status active">论文修订</span>
             </div>
             <p class="description">评估火灾边界、建筑 footprint 与人类损毁观测能否在空间和事件上可靠连接，识别野火损毁数据基础中的观测缺口。</p>
@@ -270,7 +272,7 @@
         <article class="project-card" data-domain="fire">
           <div class="card-body">
             <div class="card-heading">
-              <div><p class="project-number">04 / Cross-fire model evaluation</p><h3>Fire Foundation Model</h3></div>
+              <div><p class="project-number">04 / Cross-fire model evaluation</p><h3><a href="fire-foundation-model.html">Fire Foundation Model</a></h3></div>
               <span class="status active">结果待对齐</span>
             </div>
             <p class="description">评估地学基础模型和多光谱适配方法能否从 PlanetScope 灾前/灾后影像中识别建筑损毁，并迁移到未见火灾。</p>
@@ -290,7 +292,7 @@
         <article class="project-card wide" data-domain="fire">
           <div class="card-body">
             <div class="card-heading">
-              <div><p class="project-number">05 / Continuous geospatial infrastructure</p><h3>Fire Database / GeoLakebase</h3></div>
+              <div><p class="project-number">05 / Continuous geospatial infrastructure</p><h3><a href="fire-database.html">Fire Database / GeoLakebase</a></h3></div>
               <span class="status active">持续建设</span>
             </div>
             <p class="description">把火灾边界、建筑物、卫星影像、现场损毁标签和模型预测组织成可版本化、可追溯的数据库与分析系统，并研究受约束的 LLM agent 如何监督异步数据流程。</p>
