@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Fire Database / GeoLakebase 项目详情。">
+  <title>Fire Database / GeoLakebase | Ce Hou</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="shell topbar"><a class="identity" href="index.html">Ce Hou <span>Research</span></a><nav class="top-links" aria-label="主导航"><a href="index.html#projects">项目索引</a><a href="https://github.com/CeHouGIS">GitHub</a></nav></header>
+  <main class="shell detail-page">
+    <a class="back-link" href="index.html">← 返回项目索引</a>
+    <header class="detail-header"><p class="eyebrow">05 / Continuous geospatial infrastructure</p><h1>Fire Database / GeoLakebase</h1><p class="detail-lead">把火灾边界、建筑物、卫星影像、现场损毁标签和模型预测组织成可版本化、可追溯的数据库与分析系统，并研究受约束的 LLM agent 如何监督异步数据流程。</p><div class="detail-meta"><div class="meta-item"><strong>当前状态</strong><span>系统运行与数据持续建设</span></div><div class="meta-item"><strong>核心系统</strong><span>DuckDB Spatial / FastAPI / MapLibre</span></div><div class="meta-item"><strong>源码</strong><a href="https://github.com/CeHouGIS/GeoLakebase">GeoLakebase（私有）</a></div></div></header>
+    <div class="detail-layout"><div><section class="detail-section"><h2>研究问题</h2><p>野火损毁评估不只是一个分类器问题。火灾边界、建筑清单、影像、现场标签和模型预测会以不同速度更新，系统需要知道哪些输入版本已经就绪、哪些结果可验证，以及何时允许写回数据库。</p><h3>系统组成</h3><ul><li>DuckDB + spatial 统一 fires、buildings、damage labels、building footprints 和 PlanetScope scene metadata。</li><li>USGS、CAL FIRE DINS、xView2 等多源标签映射到统一 0–4 damage ontology，并保留原始标签和 provenance。</li><li>FastAPI 提供 fires、buildings、imagery、footprints、models 和 analysis 路由；MapLibre 网页提供地图与图层分析。</li><li>模型、数据集版本、推理运行和写回结果进入 registry，支持审计输入、输出和源代码提交。</li></ul><h3>配套论文</h3><p>`WildfireDB` 论文提出由 LLM agent 负责受约束的流程监督，由确定性的地理处理、模型推理、验证和数据库事务执行实际操作。</p></section><section class="detail-section"><h2>当前进度</h2><ul><li>数据库 schema、数据摄取、跨源关联、ML 集成、REST API、网页和论文分析框架已经形成。</li><li>数据快照中仍有 438 个 pending fires、13 个 completed、7 个 downloading 和 3 个 no-scenes，数据流水线仍在更新。</li><li>agent 机制已有仿真评估和运行日志审计，但 live LLM shadow-mode 或生产授权评估仍待开展。</li></ul><div class="callout">这个项目已经从数据库原型进入“可运行系统 + 方法论文 + 公共网页”阶段；后续重点是补齐数据、验证写回流程和完成论文。</div></section></div><aside><section class="side-panel"><h2>系统快照</h2><ul class="side-list"><li><strong>927</strong><span>研究 fire events</span></li><li><strong>2,275,383</strong><span>损毁标签记录</span></li><li><strong>56,317</strong><span>PlanetScope scene metadata</span></li></ul></section><section class="side-panel"><h2>项目入口</h2><div class="detail-links"><a href="https://github.com/CeHouGIS/GeoLakebase">GeoLakebase 源码（私有）</a><a href="https://github.com/CeHouGIS/WildfireDB">WildfireDB 论文（私有）</a><a href="https://cehougis.github.io/wildfiredb-web/">数据库地图</a></div></section></aside></div>
+    <footer class="footer detail-footer"><span>项目状态最后核对：2026-11-03。</span><a href="index.html">返回总览</a></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Fire Foundation Model 项目详情。">
+  <title>Fire Foundation Model | Ce Hou</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="shell topbar"><a class="identity" href="index.html">Ce Hou <span>Research</span></a><nav class="top-links" aria-label="主导航"><a href="index.html#projects">项目索引</a><a href="https://github.com/CeHouGIS">GitHub</a></nav></header>
+  <main class="shell detail-page">
+    <a class="back-link" href="index.html">← 返回项目索引</a>
+    <header class="detail-header"><p class="eyebrow">04 / Cross-fire model evaluation</p><h1>Fire Foundation Model</h1><p class="detail-lead">评估地学基础模型和多光谱适配方法能否从 PlanetScope 灾前/灾后影像中识别建筑损毁，并迁移到未见过的火灾。</p><div class="detail-meta"><div class="meta-item"><strong>当前状态</strong><span>论文工作稿，结果待对齐</span></div><div class="meta-item"><strong>数据规模</strong><span>27 场野火 / 163,312 对 patch</span></div><div class="meta-item"><strong>论文仓库</strong><a href="https://github.com/CeHouGIS/FireDamageFM">FireDamageFM（私有）</a></div></div></header>
+    <div class="detail-layout"><div><section class="detail-section"><h2>研究问题</h2><p>单次火灾训练得到的模型容易受到环境、季节、建筑类型和传感器条件变化的影响。这个项目用整场火灾留出测试检验基础模型和多光谱适配能否提升跨火灾泛化。</p><h3>数据与方法</h3><ul><li>构建覆盖 27 场野火的 PlanetScope 灾前/灾后建筑 patch 数据集，并以 DINS 五级损毁体系定义标签。</li><li>设置 `No Damage` 与 `Destroyed` 二分类任务，同时把 Park、Lahaina 和 Borel 整场作为 held-out test fires。</li><li>设计 MultibandLoRA adapter 接入红边和 NIR 波段，并使用 Center-Aware Attention 聚焦中心建筑。</li></ul><h3>已有结果</h3><ul><li>历史 within-fire spatial-block benchmark 中，ChangeFormer 达到 Macro F1 0.9517。</li><li>论文摘要报告 Fire-level LOO 的 CenterAware 0.8880、dNBR 0.8774；正文和实验 README 还记录了另一组波段对应的 0.8796、0.8803 等结果。</li><li>论文指出五级 DINS 损毁尺度受 3 m 影像信息量限制。</li></ul></section><section class="detail-section"><h2>当前限制与下一步</h2><p>摘要、正文和 `fire-damage-map` README 的波段设置与分数还没有完全统一，不能把其中单个分数视为最终指标。</p><ul><li>完成多 seed 结果和 Portugal held-out OOD 评估。</li><li>统一四波段/六波段/八波段实验表格、数据 manifest 和论文文字。</li><li>明确二分类筛查与五级损毁分类各自能够支持的应用场景。</li></ul></section></div><aside><section class="side-panel"><h2>研究快照</h2><ul class="side-list"><li><strong>163,312 对</strong><span>灾前/灾后建筑 patch</span></li><li><strong>27 场</strong><span>野火事件</span></li><li><strong>3 场</strong><span>Fire-level LOO held-out fires</span></li></ul></section><section class="side-panel"><h2>项目入口</h2><div class="detail-links"><a href="https://github.com/CeHouGIS/fire-damage-map">数据和实验（私有）</a><a href="https://github.com/CeHouGIS/FireDamageFM">论文稿件（私有）</a></div></section></aside></div>
+    <footer class="footer detail-footer"><span>项目状态最后核对：2026-11-03。</span><a href="index.html">返回总览</a></footer>
+  </main>
+</body>
+</html>
