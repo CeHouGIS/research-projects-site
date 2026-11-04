@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="site.css">
 </head>
 <body>
-  <header class="shell topbar"><a class="identity" href="index.html">Ce Hou <span>Research</span></a><nav class="top-links" aria-label="主导航"><a href="index.html#projects">项目索引</a><a href="https://github.com/CeHouGIS">GitHub</a></nav></header>
+  <header class="shell topbar"><a class="identity" href="index.html">Ce Hou <span>Research</span></a><nav class="top-links" aria-label="主导航"><a href="index.html#projects">项目索引</a><a href="calendar.html">任务日历</a><a href="https://github.com/CeHouGIS">GitHub</a></nav></header>
   <main class="shell detail-page">
     <a class="back-link" href="index.html">← 返回项目索引</a>
     <header class="detail-header"><p class="eyebrow">02 / Sparse visual dictionary</p><h1>Urban Visual Primitives</h1><p class="detail-lead">用稀疏自编码器从城市街景中识别基本语义模式，比较不同城市共享的视觉成分、空间分布和组合关系。</p><div class="detail-meta"><div class="meta-item"><strong>当前状态</strong><span>主实验完成，语义待核查</span></div><div class="meta-item"><strong>主实验</strong><span>30 城市 / ViT-L / W4096 / K32</span></div><div class="meta-item"><strong>代码</strong><a href="https://github.com/CeHouGIS/urban-visual-gene">urban-visual-gene</a></div></div></header>
@@ -17,7 +17,7 @@
         <section class="detail-section"><figure class="detail-figure"><img src="https://raw.githubusercontent.com/CeHouGIS/urban-visual-gene/main/archive/non_batchtopk/dashboard/multi_area/assets/M01_four_view_activation.webp" alt="街景视觉激活图样例" loading="lazy"><figcaption>视觉 feature 激活图用于观察语义候选和空间位置。</figcaption></figure><h2>研究问题</h2><p>SAE 能否把高维街景表征拆成一组更容易解释的稀疏视觉单元？这些单元在不同城市中是否有稳定的频率、空间分布和共现关系？</p><h3>方法与实验</h3><ul><li>四方向街景经过冻结 DINOv3 ViT-L/16 patch 表征和环形 panorama context mixing。</li><li>逐 patch BatchTopK SAE 将 1024 维输入映射到 4096 维稀疏字典，再重建回 1024 维。</li><li>逐维提取激活图和 Top 实例，用 VLM 生成可复核的语义候选，并进一步分析 feature 共现和城市相似度。</li></ul><h3>已有结果</h3><ul><li>主实验完成 16 轮训练，逐维 VLM 计算已完成。</li><li>全球 307 城市路线包含字典宽度、稀疏预算、语义 UMAP、共现显著性和空间检验。</li><li>城市相似度、语义 breadth、城市热图和 22 类城市分析已有代码与图件。</li></ul></section>
         <section class="detail-section"><h2>待完成验证</h2><p>当前 feature 名称仍是候选语义。下一阶段需要独立人工或跨模型核查、原语稳定性实验、跨城市 feature 对齐，以及把探索性共现证据转化为可复现的统计结论。</p><div class="callout">仓库明确提醒：不同 checkpoint 的同编号 feature 不代表同一语义，跨城市比较需要先解决对齐问题。</div></section>
       </div>
-      <aside><section class="side-panel"><h2>研究快照</h2><ul class="side-list"><li><strong>30 城市</strong><span>主实验城市规模</span></li><li><strong>4,096 维</strong><span>SAE 字典宽度</span></li><li><strong>K=32</strong><span>BatchTopK 激活预算</span></li></ul></section><section class="side-panel"><h2>项目入口</h2><div class="detail-links"><a href="https://github.com/CeHouGIS/urban-visual-gene">代码与实验</a><a href="https://cehougis.github.io/urban-visual-gene/elements/#local-results">在线组合结果</a></div></section></aside>
+      <aside><section class="side-panel"><h2>研究快照</h2><ul class="side-list"><li><strong>30 城市</strong><span>主实验城市规模</span></li><li><strong>4,096 维</strong><span>SAE 字典宽度</span></li><li><strong>K=32</strong><span>BatchTopK 激活预算</span></li></ul></section><section class="side-panel"><h2>项目入口</h2><div class="detail-links"><a href="calendar.html?project=urban-visual-primitives">安排研究任务 →</a><a href="https://github.com/CeHouGIS/urban-visual-gene">代码与实验</a><a href="https://cehougis.github.io/urban-visual-gene/elements/#local-results">在线组合结果</a></div></section></aside>
     </div>
     <footer class="footer detail-footer"><span>项目状态最后核对：2026-11-02。</span><a href="index.html">返回总览</a></footer>
   </main>

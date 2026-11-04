@@ -1,0 +1,22 @@
+# Ce Hou · Research Projects
+
+研究总览与五个项目子页面：https://cehougis.github.io/research-projects-site/
+
+## 任务日历
+
+入口：https://cehougis.github.io/research-projects-site/calendar.html
+
+- 选择日期，填写任务、所属研究项目和可选备注，然后点击“添加任务”。
+- 勾选任务后，月历、当天完成率、本月统计和各项目进度会一起更新。
+- 支持编辑内容、调整计划日期、按项目或完成状态筛选，以及删除后撤销。
+- 点击“导出备份”保存全部任务。另一设备可用“导入备份”恢复；导入会合并任务，同一编号保留更新时间较新的版本。
+
+任务保存在当前浏览器的网站本地存储中，刷新页面会保留；不会提交到 GitHub，不会自动跨设备同步。清理网站数据、使用无痕模式或切换浏览器可能导致记录不可用，建议定期导出备份。本地预览和线上网站是不同的存储空间。
+
+## 本地预览
+
+```sh
+python3 -m http.server 8766 --bind 127.0.0.1
+```
+
+打开 http://127.0.0.1:8766/ 。网站为静态 HTML、CSS 和 JavaScript，无构建步骤，由 GitHub Pages 从 `main` 分支根目录发布。

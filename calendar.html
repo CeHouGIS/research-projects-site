@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="按日期安排研究任务，记录每天的完成情况。">
+  <meta name="theme-color" content="#f5f7f4">
+  <title>研究任务日历 | Ce Hou</title>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="calendar.css">
+  <script src="calendar.js" defer></script>
+</head>
+<body>
+  <header class="shell topbar">
+    <a class="identity" href="index.html">Ce Hou <span>Research</span></a>
+    <nav class="top-links" aria-label="主导航">
+      <a href="index.html#projects">项目总览</a>
+      <a href="calendar.html" aria-current="page">任务日历</a>
+      <a href="https://github.com/CeHouGIS">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="shell calendar-page">
+    <section class="planner-heading" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Research planner</p>
+        <h1 id="page-title">研究任务日历</h1>
+        <p class="planner-subtitle">把每天要做的事记下来，看见研究一点点向前。</p>
+      </div>
+      <div class="planner-actions">
+        <button type="button" class="planner-button" id="export-tasks">导出备份</button>
+        <button type="button" class="planner-button" id="import-tasks">导入备份</button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+      </div>
+    </section>
+
+    <p class="storage-note">任务仅保存在当前浏览器，不会公开到网站，也不会自动跨设备同步。换设备或清理浏览器前，请先导出备份。</p>
+    <p id="planner-error" class="planner-error" role="alert" hidden></p>
+    <noscript><p class="planner-error">请启用 JavaScript，以添加任务和查看完成进度。</p></noscript>
+
+    <section class="planner-stats" aria-label="当前月份的任务统计">
+      <div class="planner-stat"><span>本月任务</span><strong id="month-total">0</strong><small id="stats-scope">全部项目</small></div>
+      <div class="planner-stat"><span>已完成</span><strong id="month-done">0</strong><small>每一次勾选，都是进展</small></div>
+      <div class="planner-stat"><span>待完成</span><strong id="month-pending">0</strong><small>按计划逐项推进</small></div>
+      <div class="planner-stat completion-stat"><span>本月完成率</span><strong id="month-rate">—</strong><progress id="month-progress" max="100" value="0" aria-label="本月完成率"></progress></div>
+    </section>
+
+    <div class="planner-layout">
+      <section class="calendar-board" aria-labelledby="month-heading">
+        <div class="calendar-toolbar">
+          <div class="month-navigation">
+            <button type="button" class="planner-button icon-button" id="prev-month" aria-label="上个月">←</button>
+            <h2 id="month-heading"></h2>
+            <button type="button" class="planner-button icon-button" id="next-month" aria-label="下个月">→</button>
+          </div>
+          <button type="button" class="planner-button" id="go-today">今天</button>
+        </div>
+        <div class="calendar-options">
+          <label class="project-picker" for="project-filter">研究项目<select id="project-filter"></select></label>
+          <label class="month-picker" for="month-picker">跳转月份<input type="month" id="month-picker" min="1900-01" max="2100-12"></label>
+        </div>
+        <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        <div class="calendar-grid" id="calendar-grid" role="group" aria-label="选择任务日期"></div>
+        <div class="calendar-legend"><span><i class="legend-dot pending-dot"></i>有待办</span><span><i class="legend-dot done-dot"></i>全部完成</span><span>日期下方显示：完成数 / 总数</span></div>
+        <p class="calendar-tip">选择一天查看和安排任务，也可用方向键切换日期。</p>
+      </section>
+
+      <section class="agenda-panel" aria-labelledby="day-heading">
+        <header class="agenda-heading">
+          <div><p class="eyebrow" id="day-weekday"></p><h2 id="day-heading"></h2></div>
+          <span class="day-badge" id="day-badge"></span>
+        </header>
+        <div class="day-progress"><span id="day-progress-text">尚未安排任务</span><progress id="day-progress" max="100" value="0" aria-label="当天完成率"></progress></div>
+        <div class="task-filters" role="group" aria-label="按完成状态筛选当天任务">
+          <button type="button" data-task-filter="all" aria-pressed="true">全部 <span id="day-all-count">0</span></button>
+          <button type="button" data-task-filter="pending" aria-pressed="false">待完成 <span id="day-pending-count">0</span></button>
+          <button type="button" data-task-filter="done" aria-pressed="false">已完成 <span id="day-done-count">0</span></button>
+        </div>
+        <ul id="task-list" class="task-list" aria-label="当天任务"></ul>
+        <div id="task-empty" class="task-empty"><span aria-hidden="true">✓</span><p id="empty-title">这一天还没有任务</p><small id="empty-copy">从下面添加第一项，为研究留出一点时间。</small></div>
+
+        <form id="task-form" class="task-form">
+          <h3 id="form-heading">添加任务</h3>
+          <fieldset id="task-fields">
+            <label for="task-title">任务内容<input id="task-title" type="text" maxlength="200" placeholder="例如：完成 SAE 稳定性实验" required autocomplete="off"></label>
+            <div class="task-form-row">
+              <label for="task-project">所属项目<select id="task-project"></select></label>
+              <label for="task-date">计划日期<input id="task-date" type="date" min="1900-01-01" max="2100-12-31" required></label>
+            </div>
+            <details id="notes-details"><summary>补充备注（可选）</summary><label class="sr-only" for="task-notes">任务备注</label><textarea id="task-notes" rows="3" maxlength="2000" placeholder="记录要点、实验条件或相关链接…"></textarea></details>
+            <div class="task-submit-row"><button type="submit" id="save-task" class="planner-button primary-button">＋ 添加任务</button><button type="button" id="cancel-edit" class="planner-button" hidden>取消编辑</button></div>
+          </fieldset>
+        </form>
+      </section>
+    </div>
+
+    <section class="project-progress-section" aria-labelledby="project-progress-heading">
+      <div><p class="section-kicker">Monthly progress</p><h2 id="project-progress-heading">各项目本月进度</h2></div>
+      <div class="project-progress-grid" id="project-progress"></div>
+    </section>
+    <footer class="footer"><span>计划可以调整，完成值得记录。</span><a href="index.html">返回研究总览</a></footer>
+  </main>
+  <div id="planner-notice" class="planner-notice" role="status" aria-live="polite" hidden><span id="notice-text"></span><button type="button" id="undo-delete" hidden>撤销</button></div>
+</body>
+</html>
