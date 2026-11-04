@@ -18,6 +18,9 @@
 .primary-button:hover { background: var(--green); color: white; }
 .icon-button { min-width: 36px; padding: 8px; font-size: 16px; }
 .storage-note { margin: 22px 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.task-visibility { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; border: 1px solid var(--line); border-left: 3px solid var(--green); border-radius: var(--radius); background: white; }
+.task-visibility p { flex: 1 1 260px; margin: 0; color: var(--muted); font-size: 12px; }
+.visibility-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .planner-error { padding: 12px 16px; border: 1px solid #e3b9ab; border-radius: 5px; background: #fbf1ec; color: #863f31; font-size: 13px; }
 .planner-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 26px 0 22px; }
 .planner-stat { display: grid; align-content: start; gap: 6px; padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
@@ -31,7 +34,9 @@
 .calendar-page progress::-webkit-progress-value { background: var(--green); border-radius: 3px; }
 .calendar-page progress::-moz-progress-bar { background: var(--green); }
 .completion-stat progress { margin-top: 8px; }
-.planner-layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(320px, 1fr); gap: 18px; align-items: start; }
+.planner-layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(320px, 1fr); grid-template-areas: "calendar agenda"; gap: 18px; align-items: start; }
+.calendar-board { grid-area: calendar; }
+.agenda-panel { grid-area: agenda; scroll-margin-top: 20px; }
 .calendar-board, .agenda-panel { min-width: 0; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
 .calendar-toolbar { padding: 20px 20px 16px; }
 .month-navigation { gap: 12px; }
@@ -129,7 +134,7 @@
   .planner-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 20px; }
   .planner-stat { padding: 14px 16px; }
   .planner-stat > strong { font-size: 26px; }
-  .planner-layout { grid-template-columns: 1fr; gap: 18px; }
+  .planner-layout { grid-template-columns: 1fr; grid-template-areas: "agenda" "calendar"; gap: 18px; }
   .calendar-day { min-height: 76px; gap: 5px; }
   .project-progress-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

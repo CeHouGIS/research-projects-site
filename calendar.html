@@ -7,8 +7,8 @@
   <meta name="theme-color" content="#f5f7f4">
   <title>研究任务日历 | Ce Hou</title>
   <link rel="stylesheet" href="site.css">
-  <link rel="stylesheet" href="calendar.css">
-  <script src="calendar.js?v=2" defer></script>
+  <link rel="stylesheet" href="calendar.css?v=3">
+  <script src="calendar.js?v=3" defer></script>
 </head>
 <body>
   <header class="shell topbar">
@@ -39,6 +39,15 @@
     <p id="planner-import-result" class="storage-note" role="status" hidden></p>
     <noscript><p class="planner-error">请启用 JavaScript，以添加任务和查看完成进度。</p></noscript>
 
+    <section class="task-visibility" aria-label="任务保存情况">
+      <p id="saved-task-summary" role="status">正在读取当前浏览器中的任务…</p>
+      <div class="visibility-actions">
+        <button type="button" class="planner-button" id="show-day-tasks">查看当天任务 ↓</button>
+        <button type="button" class="planner-button" id="show-all-projects" hidden>显示全部项目</button>
+        <button type="button" class="planner-button" id="show-nearest-tasks" hidden>查看最近的任务</button>
+      </div>
+    </section>
+
     <section class="planner-stats" aria-label="当前月份的任务统计">
       <div class="planner-stat"><span>本月任务</span><strong id="month-total">0</strong><small id="stats-scope">全部项目</small></div>
       <div class="planner-stat"><span>已完成</span><strong id="month-done">0</strong><small>每一次勾选，都是进展</small></div>
@@ -47,26 +56,7 @@
     </section>
 
     <div class="planner-layout">
-      <section class="calendar-board" aria-labelledby="month-heading">
-        <div class="calendar-toolbar">
-          <div class="month-navigation">
-            <button type="button" class="planner-button icon-button" id="prev-month" aria-label="上个月">←</button>
-            <h2 id="month-heading"></h2>
-            <button type="button" class="planner-button icon-button" id="next-month" aria-label="下个月">→</button>
-          </div>
-          <button type="button" class="planner-button" id="go-today">今天</button>
-        </div>
-        <div class="calendar-options">
-          <label class="project-picker" for="project-filter">研究项目<select id="project-filter"></select></label>
-          <label class="month-picker" for="month-picker">跳转月份<input type="month" id="month-picker" min="1900-01" max="2100-12"></label>
-        </div>
-        <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
-        <div class="calendar-grid" id="calendar-grid" role="group" aria-label="选择任务日期"></div>
-        <div class="calendar-legend"><span><i class="legend-dot pending-dot"></i>有待办</span><span><i class="legend-dot done-dot"></i>全部完成</span><span>日期下方显示：完成数 / 总数</span></div>
-        <p class="calendar-tip">选择一天查看和安排任务，也可用方向键切换日期。</p>
-      </section>
-
-      <section class="agenda-panel" aria-labelledby="day-heading">
+      <section class="agenda-panel" id="day-tasks" aria-labelledby="day-heading" tabindex="-1">
         <header class="agenda-heading">
           <div><p class="eyebrow" id="day-weekday"></p><h2 id="day-heading"></h2></div>
           <span class="day-badge" id="day-badge"></span>
@@ -92,6 +82,25 @@
             <div class="task-submit-row"><button type="submit" id="save-task" class="planner-button primary-button">＋ 添加任务</button><button type="button" id="cancel-edit" class="planner-button" hidden>取消编辑</button></div>
           </fieldset>
         </form>
+      </section>
+
+      <section class="calendar-board" aria-labelledby="month-heading">
+        <div class="calendar-toolbar">
+          <div class="month-navigation">
+            <button type="button" class="planner-button icon-button" id="prev-month" aria-label="上个月">←</button>
+            <h2 id="month-heading"></h2>
+            <button type="button" class="planner-button icon-button" id="next-month" aria-label="下个月">→</button>
+          </div>
+          <button type="button" class="planner-button" id="go-today">今天</button>
+        </div>
+        <div class="calendar-options">
+          <label class="project-picker" for="project-filter">研究项目<select id="project-filter"></select></label>
+          <label class="month-picker" for="month-picker">跳转月份<input type="month" id="month-picker" min="1900-01" max="2100-12"></label>
+        </div>
+        <div class="weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        <div class="calendar-grid" id="calendar-grid" role="group" aria-label="选择任务日期"></div>
+        <div class="calendar-legend"><span><i class="legend-dot pending-dot"></i>有待办</span><span><i class="legend-dot done-dot"></i>全部完成</span><span>日期下方显示：完成数 / 总数</span></div>
+        <p class="calendar-tip">选择一天查看和安排任务，也可用方向键切换日期。</p>
       </section>
     </div>
 

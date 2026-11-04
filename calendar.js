@@ -35,8 +35,10 @@
   const isTimestamp = (value) => typeof value === "string" && value.length <= 40 && Number.isFinite(Date.parse(value));
 
   let tasks = [];
-  let selected = todayKey();
-  let viewedMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1, 12);
+  const requestedDate = new URLSearchParams(location.search).get("date");
+  let selected = parseDate(requestedDate) ? requestedDate : todayKey();
+  const initialDate = parseDate(selected);
+  let viewedMonth = new Date(initialDate.getFullYear(), initialDate.getMonth(), 1, 12);
   const initialProject = new URLSearchParams(location.search).get("project");
   let projectFilter = projectById.has(initialProject) ? initialProject : "all";
   let taskFilter = "all";
@@ -187,10 +189,19 @@
   function renderDay() {
     const date = parseDate(selected);
     $("day-heading").textContent = `${date.getMonth() + 1} 月 ${date.getDate()} 日`;
-    $("day-weekday").textContent = `${date.getFullYear()} · ${new Intl.DateTimeFormat("zh-CN", { weekday: "long" }).format(date)}`;
+    $("day-weekday").textContent = `当天任务 · ${date.getFullYear()} · ${new Intl.DateTimeFormat("zh-CN", { weekday: "long" }).format(date)}`;
     $("day-badge").textContent = selected === todayKey() ? "今天" : selected < todayKey() ? "回顾" : "计划";
     const items = filteredTasks().filter((task) => task.date === selected);
     const { total, done } = tally(items);
+    const allDayTasks = tasks.filter((task) => task.date === selected);
+    const scope = projectFilter === "all" ? "全部项目" : projectById.get(projectFilter).name;
+    $("saved-task-summary").textContent = !readable
+      ? "暂时无法读取已保存的任务，请查看上方提示。"
+      : tasks.length
+        ? `本浏览器已保存 ${tasks.length} 项任务。${selected}（${scope}）显示 ${total} 项。`
+        : "当前浏览器还没有保存任务。可添加任务，或点击上方“导入备份”恢复记录。";
+    $("show-all-projects").hidden = projectFilter === "all";
+    $("show-nearest-tasks").hidden = allDayTasks.length > 0 || tasks.length === 0;
     $("day-progress-text").textContent = total ? `${done} / ${total} 项已完成 · ${ratio(done, total)}%` : "尚未安排任务";
     $("day-progress").value = ratio(done, total);
     $("day-all-count").textContent = total;
@@ -239,6 +250,10 @@
     $("task-empty").hidden = shown.length > 0;
     $("empty-title").textContent = total && taskFilter === "pending" ? "当天任务已全部完成" : total && taskFilter === "done" ? "还没有已完成的任务" : "这一天还没有任务";
     $("empty-copy").textContent = total ? "可切换上方状态，查看其他任务。" : "从下面添加第一项，为研究留出一点时间。";
+    if (!total && allDayTasks.length) {
+      $("empty-title").textContent = "当前项目在这一天没有任务";
+      $("empty-copy").textContent = `当天其他项目还有 ${allDayTasks.length} 项任务，点击上方“显示全部项目”查看。`;
+    }
   }
 
   function renderProjectProgress() {
@@ -283,6 +298,7 @@
     if (!date) return;
     selected = key;
     viewedMonth = new Date(date.getFullYear(), date.getMonth(), 1, 12);
+    updateFilterUrl();
     resetForm();
     render();
     if (focus) $("calendar-grid").querySelector(`[data-date="${key}"]`)?.focus({ preventScroll: true });
@@ -298,6 +314,7 @@
 
   function updateFilterUrl() {
     const url = new URL(location.href);
+    url.searchParams.set("date", selected);
     if (projectFilter === "all") url.searchParams.delete("project");
     else url.searchParams.set("project", projectFilter);
     history.replaceState(null, "", url);
@@ -371,6 +388,27 @@
   $("prev-month").addEventListener("click", () => moveMonth(-1));
   $("next-month").addEventListener("click", () => moveMonth(1));
   $("go-today").addEventListener("click", () => selectDate(todayKey()));
+  $("show-day-tasks").addEventListener("click", () => {
+    $("day-tasks").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("day-tasks").focus({ preventScroll: true });
+  });
+  function showAllProjects() {
+    projectFilter = "all";
+    taskFilter = "all";
+    $("project-filter").value = "all";
+    if (!editingId) $("task-project").value = "general";
+    updateFilterUrl();
+    render();
+  }
+  $("show-all-projects").addEventListener("click", showAllProjects);
+  $("show-nearest-tasks").addEventListener("click", () => {
+    if (!tasks.length) return;
+    const target = parseDate(selected).getTime();
+    const nearest = [...tasks].sort((a, b) => Math.abs(parseDate(a.date).getTime() - target) - Math.abs(parseDate(b.date).getTime() - target))[0];
+    showAllProjects();
+    selectDate(nearest.date);
+    $("show-day-tasks").click();
+  });
   $("month-picker").addEventListener("change", (event) => {
     const key = `${event.target.value}-01`;
     if (parseDate(key)) selectDate(key);
@@ -476,11 +514,14 @@
   });
 
   function addLinkedTasks() {
-    if (!location.hash.startsWith("#add-tasks=")) return;
+    const importUrl = new URL(location.href);
+    const queryPayload = importUrl.searchParams.get("add-tasks");
+    const hasFragment = location.hash.startsWith("#add-tasks=");
+    if (!hasFragment && queryPayload === null) return;
     try {
-      const payload = location.hash.slice("#add-tasks=".length);
+      const payload = hasFragment ? location.hash.slice("#add-tasks=".length) : queryPayload;
       if (payload.length > 40000) throw new Error("任务链接过长，请改用导入备份。");
-      const incoming = validateData(JSON.parse(decodeURIComponent(payload)));
+      const incoming = validateData(JSON.parse(hasFragment ? decodeURIComponent(payload) : payload));
       if (!incoming.length || incoming.length > 50) throw new Error("每个任务链接需包含 1–50 项任务。");
       let added = 0;
       // Links only add missing tasks. Reopening a link never resets progress or edits.
@@ -495,6 +536,7 @@
       $("project-filter").value = "all";
       const url = new URL(location.href);
       url.hash = "";
+      url.searchParams.delete("add-tasks");
       url.searchParams.delete("project");
       history.replaceState(null, "", url);
       selectDate(incoming[0].date);
