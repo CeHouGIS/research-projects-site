@@ -8,7 +8,7 @@
   <title>研究任务日历 | Ce Hou</title>
   <link rel="stylesheet" href="site.css">
   <link rel="stylesheet" href="calendar.css">
-  <script src="calendar.js" defer></script>
+  <script src="calendar.js?v=2" defer></script>
 </head>
 <body>
   <header class="shell topbar">
@@ -36,6 +36,7 @@
 
     <p class="storage-note">任务仅保存在当前浏览器，不会公开到网站，也不会自动跨设备同步。换设备或清理浏览器前，请先导出备份。</p>
     <p id="planner-error" class="planner-error" role="alert" hidden></p>
+    <p id="planner-import-result" class="storage-note" role="status" hidden></p>
     <noscript><p class="planner-error">请启用 JavaScript，以添加任务和查看完成进度。</p></noscript>
 
     <section class="planner-stats" aria-label="当前月份的任务统计">

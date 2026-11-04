@@ -475,6 +475,40 @@
     }
   });
 
+  function addLinkedTasks() {
+    if (!location.hash.startsWith("#add-tasks=")) return;
+    try {
+      const payload = location.hash.slice("#add-tasks=".length);
+      if (payload.length > 40000) throw new Error("任务链接过长，请改用导入备份。");
+      const incoming = validateData(JSON.parse(decodeURIComponent(payload)));
+      if (!incoming.length || incoming.length > 50) throw new Error("每个任务链接需包含 1–50 项任务。");
+      let added = 0;
+      // Links only add missing tasks. Reopening a link never resets progress or edits.
+      if (!saveChange((current) => {
+        const existing = new Set(current.map((task) => task.id));
+        const extra = incoming.filter((task) => !existing.has(task.id));
+        added = extra.length;
+        return [...current, ...extra];
+      })) return;
+      projectFilter = "all";
+      taskFilter = "all";
+      $("project-filter").value = "all";
+      const url = new URL(location.href);
+      url.hash = "";
+      url.searchParams.delete("project");
+      history.replaceState(null, "", url);
+      selectDate(incoming[0].date);
+      $("planner-import-result").textContent = added
+        ? `已添加 ${added} 项任务（首个任务日期：${incoming[0].date}），已有任务和完成状态均已保留。`
+        : "这些任务已在日历中，已保留最新的修改和完成状态，没有重复添加。";
+      $("planner-import-result").hidden = false;
+      notify(added ? `已添加 ${added} 项任务` : "任务已在日历中");
+    } catch (error) {
+      showError(`无法添加链接中的任务，现有任务未改动。${error instanceof SyntaxError || error instanceof URIError ? "任务链接格式不正确。" : error.message}`);
+    }
+  }
+
+  window.addEventListener("hashchange", addLinkedTasks);
   window.addEventListener("storage", (event) => {
     if (event.key !== STORAGE_KEY && event.key !== null) return;
     loadTasks();
@@ -491,4 +525,5 @@
   loadTasks();
   resetForm();
   render();
+  addLinkedTasks();
 })();
