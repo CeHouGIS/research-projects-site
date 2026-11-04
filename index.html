@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Ce Hou 的城市视觉表征与野火建筑损毁研究项目。">
+  <meta name="description" content="Ce Hou 的研究方向：可解释表征学习、数据缺失条件下的世界模型与基础模型训练，以及开放世界具身智能。">
   <meta name="theme-color" content="#f5f7f4">
   <title>Ce Hou | Research Projects</title>
   <link rel="stylesheet" href="calendar.css">
@@ -58,6 +58,16 @@
     }
     h1 { margin: 9px 0 10px; font-size: 38px; line-height: 1.12; font-weight: 680; }
     .intro-copy { max-width: 720px; margin: 0; color: var(--muted); font-size: 16px; }
+    .research-section { margin-bottom: 36px; scroll-margin-top: 24px; }
+    .research-intro { max-width: 780px; margin: 12px 0 22px; color: var(--muted); font-size: 14px; }
+    .research-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .research-direction { display: flex; flex-direction: column; min-width: 0; padding-top: 16px; border-top: 2px solid var(--green); }
+    .research-direction h3 { margin: 6px 0; font-size: 20px; line-height: 1.4; }
+    .research-direction .direction-english { margin: 0; color: var(--green); font-size: 12px; line-height: 1.6; }
+    .research-direction .direction-copy { margin: 13px 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .direction-connection { margin: auto 0 0; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .direction-connection strong { color: var(--ink); font-weight: 650; }
+    .direction-connection a { color: var(--green); }
     .stats {
       display: flex;
       gap: 34px;
@@ -154,6 +164,8 @@
       .stat { min-width: 95px; }
       .control-row { align-items: flex-start; flex-direction: column; }
       .project-grid { grid-template-columns: 1fr; }
+      .research-grid { grid-template-columns: 1fr; gap: 24px; }
+      .research-section { margin-bottom: 30px; }
       .wide { grid-column: auto; }
       .wide .detail-list { grid-template-columns: 1fr; }
     }
@@ -177,8 +189,8 @@
   <header class="shell topbar">
     <a class="identity" href="#top">Ce Hou <span>Research</span></a>
     <nav class="top-links" aria-label="主导航">
-      <a href="#urban">城市视觉</a>
-      <a href="#wildfire">野火研究</a>
+      <a href="#research">研究方向</a>
+      <a href="#projects">研究项目</a>
       <a href="calendar.html">任务日历</a>
       <a href="https://github.com/CeHouGIS">GitHub</a>
     </nav>
@@ -188,12 +200,41 @@
     <section class="intro" aria-labelledby="page-title">
       <p class="eyebrow">Research portfolio / 2026</p>
       <h1 id="page-title">Ce Hou</h1>
-      <p class="intro-copy">城市视觉表征与野火建筑损毁信息基础设施。研究从可解释视觉原语与城市差异，延伸到跨火灾模型评估和可追溯的地理数据系统。</p>
+      <p class="intro-copy">我的研究聚焦可解释表征学习、数据缺失条件下的世界模型与基础模型训练，以及开放世界具身智能。我希望让模型学到可理解、可组合的环境表征，并在不完整观测和不断变化的真实环境中持续学习、预测与交互。</p>
       <div class="stats" aria-label="项目概况">
         <div class="stat"><strong>05</strong><span>研究项目</span></div>
-        <div class="stat"><strong>02</strong><span>研究主线</span></div>
+        <div class="stat"><strong>03</strong><span>研究方向</span></div>
         <div class="stat"><strong>30+</strong><span>城市视觉样本城市</span></div>
         <div class="stat"><strong>27</strong><span>建筑损毁研究火灾</span></div>
+      </div>
+    </section>
+
+    <section id="research" class="research-section" aria-labelledby="research-title">
+      <p class="section-kicker">Research interests</p>
+      <h2 id="research-title" class="section-title">研究方向</h2>
+      <p class="research-intro">从理解模型如何表示环境，到在有限观测中学习世界，再到通过行动获取新证据，三个方向共同围绕真实环境中的学习与泛化展开。</p>
+      <div class="research-grid">
+        <article class="research-direction" aria-labelledby="representation-title">
+          <p class="project-number">01 / Representation</p>
+          <h3 id="representation-title">可解释表征学习</h3>
+          <p class="direction-english" lang="en">Explainable Representation Learning</p>
+          <p class="direction-copy">理解高维视觉表征中编码的语义、结构与关系，探索如何将其分解为可定位、可解释、可组合的基本单元，并通过特征干预与可控生成检验这些表征的含义。</p>
+          <p class="direction-connection"><strong>当前研究：</strong><a href="urban-visual-primitives.html">Urban Visual Primitives</a> 使用 SAE 识别城市语义原语；<a href="urban-visual-gene.html">Urban Visual Gene</a> 探索视觉成分的加减组合与可控生成。</p>
+        </article>
+        <article class="research-direction" aria-labelledby="world-model-title">
+          <p class="project-number">02 / Learning with incomplete data</p>
+          <h3 id="world-model-title">数据缺失条件下的世界模型与基础模型训练</h3>
+          <p class="direction-english" lang="en">World &amp; Foundation Model Training with Incomplete Data</p>
+          <p class="direction-copy">关注观测不完整、模态缺失和标注稀疏条件下的模型训练，探索如何利用有限证据学习环境的结构、动态与不确定性，并提升模型在新场景和分布变化下的泛化能力。</p>
+          <p class="direction-connection"><strong>当前切入点：</strong><a href="fire-description.html">Fire Description</a> 与 <a href="fire-database.html">Fire Database</a> 研究观测缺口及多源数据整合；<a href="fire-foundation-model.html">Fire Foundation Model</a> 评估跨火灾泛化，为进一步探索世界模型提供基础。</p>
+        </article>
+        <article class="research-direction" aria-labelledby="embodied-title">
+          <p class="project-number">03 / Perception &amp; interaction</p>
+          <h3 id="embodied-title">开放世界具身智能</h3>
+          <p class="direction-english" lang="en">Open-World Embodied Intelligence</p>
+          <p class="direction-copy">研究智能体如何在开放、变化且部分可观测的环境中，将感知表征、环境建模与行动反馈联系起来，通过主动探索获得新信息，并持续适应未知场景与任务。</p>
+          <p class="direction-connection"><strong>研究目标：</strong>将可解释、可组合的场景表征与世界模型连接到交互和决策，探索从理解环境到在环境中行动的学习闭环。</p>
+        </article>
       </div>
     </section>
 

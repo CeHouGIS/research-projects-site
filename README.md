@@ -2,6 +2,14 @@
 
 研究总览与五个项目子页面：https://cehougis.github.io/research-projects-site/
 
+## 研究方向
+
+- **可解释表征学习（Explainable Representation Learning）**：理解高维表征中的语义与结构，探索可解释、可组合的视觉原语及可控生成。
+- **数据缺失条件下的世界模型与基础模型训练（World & Foundation Model Training with Incomplete Data）**：关注不完整观测、缺失模态和稀疏标注条件下的学习、环境建模与泛化。
+- **开放世界具身智能（Open-World Embodied Intelligence）**：连接感知表征、环境建模、主动探索与行动反馈，面向未知场景和任务持续学习。
+
+首页“研究方向”区块介绍各方向与现有城市视觉、野火数据和模型研究的联系，以及进一步探索交互与决策的研究目标。
+
 ## 任务日历
 
 入口：https://cehougis.github.io/research-projects-site/calendar.html
